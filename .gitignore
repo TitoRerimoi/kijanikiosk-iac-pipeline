@@ -15,3 +15,6 @@ terraform.tfplan
 
 # macOS
 .DS_Store
+
+terraform/kijanikiosk-key.pem
+
