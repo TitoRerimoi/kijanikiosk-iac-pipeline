@@ -27,4 +27,6 @@ module "app_server" {
   key_name = var.key_name
 
   ami_id = data.aws_ami.ubuntu.id
+
+  security_group_id = aws_security_group.kijanikiosk.id
 }

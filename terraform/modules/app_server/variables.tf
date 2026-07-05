@@ -17,3 +17,8 @@ variable "ami_id" {
   description = "Ubuntu AMI ID"
   type        = string
 }
+
+variable "security_group_id" {
+  description = "Security Group ID attached to the EC2 instance"
+  type        = string
+}
