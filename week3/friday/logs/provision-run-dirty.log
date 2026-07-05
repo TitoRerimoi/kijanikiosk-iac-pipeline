@@ -1,0 +1,134 @@
+
+================================================
+Phase 1 - Package Installation and Validation
+================================================
+[2026-06-21 11:43:29] Checking package holds
+[2026-06-21 11:43:29] Detected held package: curl
+[2026-06-21 11:43:29] Updating package cache
+Hit:1 https://download.docker.com/linux/ubuntu resolute InRelease
+Hit:2 http://security.ubuntu.com/ubuntu resolute-security InRelease
+Hit:3 http://archive.ubuntu.com/ubuntu resolute InRelease
+Hit:4 http://archive.ubuntu.com/ubuntu resolute-updates InRelease
+Hit:5 http://archive.ubuntu.com/ubuntu resolute-backports InRelease
+Reading package lists...
+Building dependency tree...
+Reading state information...
+12 packages can be upgraded. Run 'apt list --upgradable' to see them.
+[2026-06-21 11:43:32] Installing required packages
+Reading package lists...
+Building dependency tree...
+Reading state information...
+acl is already the newest version (2.3.2-2).
+nginx is already the newest version (1.28.3-2ubuntu1.5).
+logrotate is already the newest version (3.22.0-1build1).
+ufw is already the newest version (0.36.2-9build1).
+curl is already the newest version (8.18.0-1ubuntu2.1).
+Solving dependencies...
+Summary:
+  Upgrading: 0, Installing: 0, Removing: 0, Not Upgrading: 12
+[2026-06-21 11:43:32] Verifying packages
+[2026-06-21 11:43:32] PASS: nginx installed
+[2026-06-21 11:43:32] PASS: ufw installed
+[2026-06-21 11:43:32] PASS: logrotate installed
+[2026-06-21 11:43:32] PASS: acl package installed
+
+================================================
+Phase 2 - Users and Groups
+================================================
+[2026-06-21 11:43:32] Checking kijanikiosk group
+[2026-06-21 11:43:33] Detected existing group: kijanikiosk
+[2026-06-21 11:43:33] Checking service accounts
+[2026-06-21 11:43:33] Detected existing user: kk-api
+[2026-06-21 11:43:33] Detected existing user: kk-payments
+[2026-06-21 11:43:33] Detected existing user: kk-logs
+[2026-06-21 11:43:33] Verifying users
+[2026-06-21 11:43:33] PASS: kk-api exists
+[2026-06-21 11:43:33] PASS: kk-payments exists
+[2026-06-21 11:43:33] PASS: kk-logs exists
+[2026-06-21 11:43:33] PASS: kijanikiosk group exists
+
+================================================
+Phase 3 - Directory Structure and ACLs
+================================================
+[2026-06-21 11:43:33] Creating directory structure
+[2026-06-21 11:43:33] Fixing ownership
+[2026-06-21 11:43:33] Fixing permissions
+[2026-06-21 11:43:33] Applying ACLs
+[2026-06-21 11:43:33] Verifying directory structure
+[2026-06-21 11:43:33] PASS: /opt/kijanikiosk/config exists
+[2026-06-21 11:43:33] PASS: /opt/kijanikiosk/shared/logs exists
+[2026-06-21 11:43:33] PASS: /opt/kijanikiosk/health exists
+[2026-06-21 11:43:33] Verifying ACLs
+[2026-06-21 11:43:33] PASS: ACL applied
+
+================================================
+Phase 4 - systemd Services
+================================================
+[2026-06-21 11:43:33] Creating systemd service files
+[2026-06-21 11:43:33] Reloading systemd
+[2026-06-21 11:43:33] Enabling services
+[2026-06-21 11:43:34] Starting services
+[2026-06-21 11:43:34] Verifying services
+[2026-06-21 11:43:34] PASS: kk-api active
+[2026-06-21 11:43:34] PASS: kk-payments active
+[2026-06-21 11:43:34] PASS: kk-logs active
+
+================================================
+Phase 5 - Firewall Configuration
+================================================
+[2026-06-21 11:43:34] Checking firewall rules
+[2026-06-21 11:43:34] Resetting firewall
+Backing up 'user.rules' to '/etc/ufw/user.rules.20260621_114336'
+Backing up 'before.rules' to '/etc/ufw/before.rules.20260621_114336'
+Backing up 'after.rules' to '/etc/ufw/after.rules.20260621_114336'
+Backing up 'user6.rules' to '/etc/ufw/user6.rules.20260621_114336'
+Backing up 'before6.rules' to '/etc/ufw/before6.rules.20260621_114336'
+Backing up 'after6.rules' to '/etc/ufw/after6.rules.20260621_114336'
+
+Default incoming policy changed to 'deny'
+(be sure to update your rules accordingly)
+Default outgoing policy changed to 'allow'
+(be sure to update your rules accordingly)
+[2026-06-21 11:43:36] Allowing application ports
+Rules updated
+Rules updated (v6)
+Rules updated
+Rules updated (v6)
+Firewall is active and enabled on system startup
+[2026-06-21 11:43:37] Verifying firewall
+[2026-06-21 11:43:37] PASS: Port 3000 allowed
+[2026-06-21 11:43:37] PASS: Port 3001 allowed
+
+================================================
+Phase 6 - Verification
+================================================
+[2026-06-21 11:43:37] Verifying services
+[2026-06-21 11:43:37] PASS: kk-api running
+[2026-06-21 11:43:37] PASS: kk-payments running
+[2026-06-21 11:43:37] PASS: kk-logs running
+[2026-06-21 11:43:37] Verifying directories
+[2026-06-21 11:43:37] PASS: /opt/kijanikiosk/config exists
+[2026-06-21 11:43:37] PASS: /opt/kijanikiosk/shared/logs exists
+[2026-06-21 11:43:38] PASS: /opt/kijanikiosk/health exists
+
+================================================
+Phase 7 - Journal Persistence and Log Rotation
+================================================
+[2026-06-21 11:43:38] Configuring journal persistence
+[2026-06-21 11:43:38] Creating logrotate configuration
+[2026-06-21 11:43:38] PASS: logrotate configuration created
+
+================================================
+Phase 8 - Monitoring Health Checks
+================================================
+[2026-06-21 11:43:38] PASS: health.json created
+{
+  "status": "healthy",
+  "services": {
+    "kk-api": "active",
+    "kk-payments": "active",
+    "kk-logs": "active"
+  }
+}
+
+Provisioning completed.

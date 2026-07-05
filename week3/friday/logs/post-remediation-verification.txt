@@ -1,0 +1,32 @@
+POST REMEDIATION VERIFICATION
+
+Users Verified:
+PASS - kk-api
+PASS - kk-payments
+PASS - kk-logs
+
+Group Verified:
+PASS - kijanikiosk
+
+Directories Verified:
+PASS - /opt/kijanikiosk/config
+PASS - /opt/kijanikiosk/shared/logs
+PASS - /opt/kijanikiosk/health
+
+ACL Verification:
+PASS - kijanikiosk ACL present
+
+Services Verified:
+PASS - kk-api active
+PASS - kk-payments active
+PASS - kk-logs active
+
+Firewall Verification:
+PASS - Port 3000 allowed
+PASS - Port 3001 allowed
+
+Health Check:
+PASS - health.json generated
+
+Result:
+Environment successfully remediated and verified.

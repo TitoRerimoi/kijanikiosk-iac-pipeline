@@ -1,0 +1,5 @@
+aws_region    = "eu-west-1"
+instance_type = "t2.micro"
+key_name      = "kijanikiosk-key"
+environment   = "staging"
+ami_id        = "ami-xxxxxxxxxxxxxxxxx"

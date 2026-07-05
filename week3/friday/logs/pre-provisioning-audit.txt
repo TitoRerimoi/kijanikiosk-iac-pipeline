@@ -1,0 +1,25 @@
+PRE-PROVISIONING AUDIT
+
+Users:
+
+* kk-api
+* kk-payments
+* kk-logs
+
+Group:
+
+* kijanikiosk
+
+Observed Issues:
+
+* Existing service accounts detected
+* Existing group detected
+* Insecure permissions identified on configuration directory
+* Firewall contained a deny rule on port 3001
+* curl package hold detected
+
+Risk:
+These conditions could lead to inconsistent deployments and security concerns.
+
+Remediation:
+All identified issues were corrected through the provisioning script using an idempotent approach.
