@@ -1,10 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:18-alpine'
-            reuseNode true
-        }
-    }
+    agent any
 
     options {
         timestamps()
@@ -43,7 +38,6 @@ pipeline {
                         sh 'npm audit --audit-level=high || true'
                     }
                 }
-
             }
         }
 
@@ -55,14 +49,13 @@ pipeline {
 
         stage('Publish') {
             steps {
-                echo "Publish stage placeholder - Nexus configuration next"
+                echo "Publishing ${APP_NAME} version ${APP_VERSION}"
                 sh 'echo "${APP_NAME}-${APP_VERSION}"'
             }
         }
     }
 
     post {
-
         always {
             cleanWs()
             echo "Pipeline finished. Status: ${currentBuild.currentResult}"
