@@ -1,19 +1,83 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'node:18-alpine'
+            reuseNode true
+        }
+    }
+
+    options {
+        timestamps()
+    }
+
+    environment {
+        APP_NAME = 'kijanikiosk-payments'
+        APP_VERSION = "1.0.${BUILD_NUMBER}"
+    }
 
     stages {
-        stage('Environment Check') {
+
+        stage('Lint') {
             steps {
-                sh 'echo "Build triggered for: $(git log -1 --pretty=%s)"'
-                sh 'node --version'
-                sh 'npm --version'
+                sh 'npm run lint'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'npm run build'
+            }
+        }
+
+        stage('Verify') {
+            parallel {
+
+                stage('Test') {
+                    steps {
+                        sh 'npm test'
+                    }
+                }
+
+                stage('Security Audit') {
+                    steps {
+                        sh 'npm audit --audit-level=high || true'
+                    }
+                }
+
+            }
+        }
+
+        stage('Archive') {
+            steps {
+                archiveArtifacts artifacts: 'dist/**', fingerprint: true
+            }
+        }
+
+        stage('Publish') {
+            steps {
+                echo "Publish stage placeholder - Nexus configuration next"
+                sh 'echo "${APP_NAME}-${APP_VERSION}"'
             }
         }
     }
 
     post {
+
         always {
-            echo "Pipeline finished. Status: ${currentBuild.result ?: 'SUCCESS'}"
+            cleanWs()
+            echo "Pipeline finished. Status: ${currentBuild.currentResult}"
+        }
+
+        success {
+            echo "Build completed successfully."
+        }
+
+        failure {
+            echo "Pipeline failed."
+        }
+
+        changed {
+            echo "Build status changed."
         }
     }
 }
