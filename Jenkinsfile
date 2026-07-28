@@ -17,9 +17,19 @@ pipeline {
 
     stages {
 
+        stage('Lint') {
+            steps {
+                sh '''
+                    echo "========== LINT =========="
+                    npm run lint
+                '''
+            }
+        }
+
     }
 
     post {
+
         changed {
             echo "Build status changed to ${currentBuild.currentResult} - ${env.JOB_NAME} #${env.BUILD_NUMBER}"
         }
@@ -27,5 +37,7 @@ pipeline {
         always {
             cleanWs()
         }
+
     }
+
 }
