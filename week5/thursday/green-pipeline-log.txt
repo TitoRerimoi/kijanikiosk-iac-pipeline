@@ -1,0 +1,124 @@
+Started by user Tito
+Obtained Jenkinsfile from git https://github.com/TitoRerimoi/kijanikiosk-iac-pipeline.git
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/lib/jenkins/workspace/kijanikiosk-payments
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+using credential github-pat
+ > /usr/bin/git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/kijanikiosk-payments/.git # timeout=10
+Fetching changes from the remote Git repository
+ > /usr/bin/git config remote.origin.url https://github.com/TitoRerimoi/kijanikiosk-iac-pipeline.git # timeout=10
+Fetching upstream changes from https://github.com/TitoRerimoi/kijanikiosk-iac-pipeline.git
+ > /usr/bin/git --version # timeout=10
+ > git --version # 'git version 2.43.0'
+using GIT_ASKPASS to set credentials GitHub Personal Access Token
+ > /usr/bin/git fetch --tags --force --progress -- https://github.com/TitoRerimoi/kijanikiosk-iac-pipeline.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > /usr/bin/git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision ed2cb18d0f9ccb5007aea05de1c75db4b42efd94 (refs/remotes/origin/main)
+ > /usr/bin/git config core.sparsecheckout # timeout=10
+ > /usr/bin/git checkout -f ed2cb18d0f9ccb5007aea05de1c75db4b42efd94 # timeout=10
+Commit message: "Temporarily use agent any"
+ > /usr/bin/git rev-list --no-walk f1369e8316008d4fbbfbb1e8deaa0de343746ad2 # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] timestamps
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Lint)
+[Pipeline] sh
+14:22:57  + npm run lint
+14:22:59  
+14:22:59  > kijanikiosk-payments@1.0.0 lint
+14:22:59  > echo Lint passed
+14:22:59  
+14:22:59  Lint passed
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build)
+[Pipeline] sh
+14:22:59  + npm run build
+14:23:00  
+14:23:00  > kijanikiosk-payments@1.0.0 build
+14:23:00  > mkdir -p dist && cp -r src/* dist/
+14:23:00  
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Verify)
+[Pipeline] parallel
+[Pipeline] { (Branch: Test)
+[Pipeline] { (Branch: Security Audit)
+[Pipeline] stage
+[Pipeline] { (Test)
+[Pipeline] stage
+[Pipeline] { (Security Audit)
+[Pipeline] sh
+[Pipeline] sh
+14:23:01  + npm test
+14:23:01  + npm audit --audit-level=high
+14:23:03  
+14:23:03  > kijanikiosk-payments@1.0.0 test
+14:23:03  > node test/test.js
+14:23:03  
+14:23:03  found 0 vulnerabilities
+[Pipeline] }
+[Pipeline] // stage
+14:23:03  Running tests...
+14:23:03  All tests passed.
+[Pipeline] }
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // parallel
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Archive)
+[Pipeline] archiveArtifacts
+14:23:04  Archiving artifacts
+14:23:04  Recording fingerprints
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Publish)
+[Pipeline] echo
+14:23:04  Publishing kijanikiosk-payments version 1.0.12
+[Pipeline] sh
+14:23:04  + echo kijanikiosk-payments-1.0.12
+14:23:04  kijanikiosk-payments-1.0.12
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] cleanWs
+14:23:05  [WS-CLEANUP] Deleting project workspace...
+14:23:05  [WS-CLEANUP] Deferred wipeout is used...
+14:23:05  [WS-CLEANUP] done
+[Pipeline] echo
+14:23:05  Pipeline finished. Status: SUCCESS
+[Pipeline] echo
+14:23:05  Build status changed.
+[Pipeline] echo
+14:23:05  Build completed successfully.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // timestamps
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
