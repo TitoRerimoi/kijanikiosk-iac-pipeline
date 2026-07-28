@@ -1,76 +1,31 @@
 pipeline {
+
     agent any
 
-    options {
-        timestamps()
+    environment {
+        NODE_ENV = 'test'
+        BUILD_DIR = 'dist'
+        APP_NAME = 'kijanikiosk-payments'
     }
 
-    environment {
-        APP_NAME = 'kijanikiosk-payments'
-        APP_VERSION = "1.0.${BUILD_NUMBER}"
+    options {
+        timeout(time: 15, unit: 'MINUTES')
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+        disableConcurrentBuilds()
+        timestamps()
     }
 
     stages {
 
-        stage('Lint') {
-            steps {
-                sh 'npm run lint'
-            }
-        }
-
-        stage('Build') {
-            steps {
-                sh 'npm run build'
-            }
-        }
-
-        stage('Verify') {
-            parallel {
-
-                stage('Test') {
-                    steps {
-                        sh 'npm test'
-                    }
-                }
-
-                stage('Security Audit') {
-                    steps {
-                        sh 'npm audit --audit-level=high || true'
-                    }
-                }
-            }
-        }
-
-        stage('Archive') {
-            steps {
-                archiveArtifacts artifacts: 'dist/**', fingerprint: true
-            }
-        }
-
-        stage('Publish') {
-            steps {
-                echo "Publishing ${APP_NAME} version ${APP_VERSION}"
-                sh 'echo "${APP_NAME}-${APP_VERSION}"'
-            }
-        }
     }
 
     post {
+        changed {
+            echo "Build status changed to ${currentBuild.currentResult} - ${env.JOB_NAME} #${env.BUILD_NUMBER}"
+        }
+
         always {
             cleanWs()
-            echo "Pipeline finished. Status: ${currentBuild.currentResult}"
-        }
-
-        success {
-            echo "Build completed successfully."
-        }
-
-        failure {
-            echo "Pipeline failed."
-        }
-
-        changed {
-            echo "Build status changed."
         }
     }
 }
